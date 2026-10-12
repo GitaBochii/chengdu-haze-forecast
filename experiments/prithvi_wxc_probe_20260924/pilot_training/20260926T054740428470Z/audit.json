@@ -1,0 +1,63 @@
+{
+  "status": "all_nine_runs_reproduced",
+  "runs": [
+    {
+      "seed": 24,
+      "arm": "baseline",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 24,
+      "arm": "capacity_control",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 24,
+      "arm": "spatial_fusion",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 42,
+      "arm": "baseline",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 42,
+      "arm": "capacity_control",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 42,
+      "arm": "spatial_fusion",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 2026,
+      "arm": "baseline",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 2026,
+      "arm": "capacity_control",
+      "rows": 25,
+      "native_exact_logits": true
+    },
+    {
+      "seed": 2026,
+      "arm": "spatial_fusion",
+      "rows": 25,
+      "native_exact_logits": true
+    }
+  ],
+  "report_sha256": "7248b305daca207fa1a95731e23df7a5ee74642d1ee9002851cc11947b3b5b7b",
+  "preprocessing_sha256": "39d84ea7043f326c9ab0f9c4c4fe6b346bfd55f6aab389347a4049b1d6d89ebd",
+  "audit_code_sha256": "79c3bf918ff8e9402d99a5c314c08c7d6c993833715ce22aa80c334462a698c0",
+  "deployment_verified": false
+}

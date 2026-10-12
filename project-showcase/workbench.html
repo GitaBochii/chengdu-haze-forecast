@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>预测工作区 · 成都雾霾消散时间预测</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="workbench.css">
+<link rel="stylesheet" href="effects.css">
+<link rel="stylesheet" href="rebound.css">
+<script src="effects.js" defer></script>
+<script src="workbench.js" defer></script><script src="multimodal.js" defer></script><script src="weather-inputs.js" defer></script><script src="rebound-analysis.js" defer></script><script src="rebound.js" defer></script></head>
+<body class="workbench">
+<a class="skip" href="#workspace-main">跳至预测工作区</a>
+<header class="workspace-header"><a class="brand" href="index.html">成都雾霾消散时间预测</a><a href="index.html">项目介绍 ↗</a></header>
+<main class="workspace" id="workspace-main">
+  <div class="workspace-title"><div><span class="small-label">成都 / 历史研究</span><h1>预测工作区</h1></div><span id="connection" role="status">正在连接本地服务</span></div>
+  <div class="mode-tabs" role="tablist" aria-label="预测方式"><button role="tab" aria-selected="true" aria-controls="replay-panel" id="tab-replay" data-mode="replay">严格历史回测</button><button role="tab" aria-selected="false" aria-controls="manual-panel" id="tab-manual" data-mode="manual" tabindex="-1">手动输入</button><button role="tab" aria-selected="false" aria-controls="sequence-panel" id="tab-sequence" data-mode="sequence" tabindex="-1">24 小时序列</button><button role="tab" aria-selected="false" aria-controls="online-panel" id="tab-online" data-mode="online" tabindex="-1">在线估算</button><button role="tab" aria-selected="false" aria-controls="multimodal-panel" id="tab-multimodal" data-mode="multimodal" tabindex="-1">多模态研究</button><button role="tab" aria-selected="false" aria-controls="rebound-panel" id="tab-rebound" data-mode="rebound" tabindex="-1">反弹与恢复</button></div>
+  <div class="workspace-grid"><aside class="input-pane">
+    <section role="tabpanel" aria-labelledby="tab-replay" id="replay-panel"><h2>选择历史记录</h2><p class="help">选择一次污染过程，对照预测时长与实际恢复时间。</p><form id="replay-form"><label>观测年份<select id="history-year" required disabled><option value="">正在加载年份</option></select></label><label>观测日期<select id="history-date" required disabled><option value="">正在加载日期</option></select></label><label>污染时刻（北京时间）<select id="history-time" required disabled><option value="">请先选择日期</option></select></label><button type="submit" class="primary" disabled>查看回测</button></form></section>
+    <section role="tabpanel" aria-labelledby="tab-manual" id="manual-panel" hidden><h2>输入当前观测</h2><p class="help">单时刻输入使用快照模型，不具备完整的污染过程信息。下方为示例值，请替换为观测值。</p><form id="manual-form"><label>观测时间（北京时间）<input type="datetime-local" id="manual-time" required step="3600"></label><div class="fields" id="manual-fields"></div><button class="primary" type="submit" disabled>预测恢复时间</button></form></section>
+    <section role="tabpanel" aria-labelledby="tab-sequence" id="sequence-panel" hidden><h2>上传连续观测</h2><p class="help">至少 24 个连续小时，最大 900 KB。预测时刻为数据最后一小时，时间按北京时间处理。</p><form id="sequence-form"><label class="upload-field">观测数据 CSV<input type="file" id="csv-file" accept=".csv,text/csv" required></label><button type="button" id="template" class="secondary" disabled>下载 CSV 表头模板</button><details><summary>查看数据要求</summary><p class="help">全部时间须连续、整点且不重复；最近 24 小时 AQI、PM2.5、PM10 不能为空。不要填入预测时刻之后的观测。污染物单位为 µg/m³，CO 为 mg/m³。</p><p id="csv-columns" class="help"></p></details><button class="primary" type="submit" disabled>读取并预测</button></form></section>
+    <section role="tabpanel" aria-labelledby="tab-online" id="online-panel" hidden><h2>在线估算 · 成都</h2><p class="help">自动获取最近 24 个已结束小时的网格估算序列，不是监测站实测。无需账号或密钥。</p><button type="button" class="primary" id="import-online">获取最近 24 小时</button><p class="help">位置：30.67°N，104.06°E。短时间内重复获取将复用最近 5 分钟的响应。</p><form id="online-form"><label class="estimate-consent"><input type="checkbox" id="online-consent" required>我了解这是模型估算，仅用于实验参考。</label><button type="submit" class="secondary" id="predict-online" disabled>使用这份序列预测</button></form><div class="online-sources"><a href="https://open-meteo.com/en/docs/air-quality-api" target="_blank" rel="noopener noreferrer">空气质量：Open-Meteo / CAMS ↗</a><a href="https://open-meteo.com/en/docs" target="_blank" rel="noopener noreferrer">气象：Open-Meteo ↗</a></div></section>
+    <section role="tabpanel" aria-labelledby="tab-multimodal" id="multimodal-panel" hidden>
+      <h2>气象网格 + 站点序列</h2><p class="help">Prithvi 气象特征与 9 站点污染历史联合预测。离线再分析数据，不代表实时可得。</p>
+      <form id="research-form">
+        <label>样本分组<select id="research-partition"><option value="test">最终审计 · 7 个起点</option><option value="dev">开发 · 4 个起点</option><option value="train">训练 · 14 个起点</option></select></label>
+        <label>观测时刻（北京时间）<select id="research-time" required><option value="">等待加载</option></select></label>
+        <label>对照模型<select id="research-arm" required><option value="spatial_fusion">空间气象融合</option></select></label>
+        <label>实验种子<select id="research-seed"><option value="24">24</option></select></label>
+        <button type="submit" class="primary" disabled>查看归档结果</button>
+        <button type="button" class="secondary" id="research-reinfer" disabled>使用历史输入重新推理</button>
+      </form><p id="research-state" class="help" role="status">等待研究数据</p>
+      <p class="help">仅 25 个起点，最终审计含 3 个污染过程；尚无稳定精度提升证据。这里的结果不替代现有模型。</p>
+    </section>
+    <section role="tabpanel" aria-labelledby="tab-rebound" id="rebound-panel" hidden><div id="rebound-controls"></div></section>
+    <p class="input-footer">本地研究工具 · 非实时监测与公共预警</p>
+  </aside><section class="result-pane" aria-label="预测结果" aria-busy="false">
+    <div id="feedback" role="status" class="feedback">选择历史记录，或输入观测数据。</div><button type="button" id="retry-connection" class="secondary" hidden>重新连接</button>
+    <div id="empty-result" class="empty-result"><span class="small-label">整体空气质量恢复</span><h2>选择观测，<br>查看剩余恢复时间。</h2><p>从观测时刻起计算，到首次连续满足恢复条件的窗口开始时刻为止。</p><div class="empty-criterion"><span>AQI ≤ 100</span><span>连续 6 小时</span></div><p class="help">恢复还需满足颗粒物污染判定条件。新输入的真实恢复时间须等待后续观测。</p></div>
+    <section id="online-preview" hidden aria-label="在线估算序列预览"><span class="small-label">模型估算 · 非实测</span><h2>最近 24 小时序列</h2><p id="online-range"></p><p id="online-fetched" class="help"></p><p id="online-notice" class="result-notice"></p><p id="online-missing" class="help"></p><div class="table-scroll" tabindex="0" role="region" aria-label="在线估算小时数据"><table><caption>北京时间；AQI 为训练口径推算值，非官方发布值。</caption><thead><tr><th>时间</th><th>AQI 推算</th><th>PM2.5</th><th>PM10</th><th>气温 °C</th></tr></thead><tbody id="online-rows"></tbody></table></div></section>
+    <section id="rebound-view" hidden aria-label="污染反弹与持续恢复案例"></section>
+    <div id="result" hidden><div class="result-heading"><div><span class="small-label" id="result-kind"></span><h2 id="result-time"></h2></div><button type="button" class="secondary" id="download-result">下载结果 JSON</button></div>
+    <div class="metrics"><div><span>预计剩余时间</span><strong id="prediction"></strong></div><div><span id="actual-label">历史真实剩余时间</span><strong id="actual"></strong></div><div><span id="error-label">本条绝对误差</span><strong id="error"></strong></div></div>
+    <p id="result-notice" class="result-notice"></p><dl class="result-meta"><div><dt id="recovery-label">预计恢复时刻</dt><dd id="recovery-time"></dd></div><div><dt>模型 / 结果来源</dt><dd id="model-name"></dd></div><div><dt>恢复条件</dt><dd id="recovery-criterion">AQI ≤ 100，且不再满足颗粒物污染条件，连续保持 6 小时。</dd></div></dl>
+    <section class="trend-section"><h3>输入观测趋势</h3><p class="help">仅展示预测时刻及以前的观测，不是未来浓度预测。</p><div class="trend-legend" role="group" aria-label="显示污染物曲线"><label style="--series:#275f4b"><input type="checkbox" data-curve="aqi" checked>AQI</label><label style="--series:#38699b"><input type="checkbox" data-curve="pm2_5" checked>PM2.5</label><label style="--series:#ac6533"><input type="checkbox" data-curve="pm10" checked>PM10</label></div><div id="trend" role="img" aria-label="AQI、PM2.5 与 PM10 历史观测趋势"></div><p id="trend-note" class="help"></p></section>
+    <details><summary>查看输入观测明细</summary><div class="table-scroll" tabindex="0" role="region" aria-label="污染物观测明细"><table><caption>北京时间；PM2.5、PM10 单位为 µg/m³</caption><thead><tr><th scope="col">时间</th><th scope="col">AQI</th><th scope="col">PM2.5</th><th scope="col">PM10</th></tr></thead><tbody id="trend-rows"></tbody></table></div></details>
+    </div>
+  </section></div>
+</main><footer class="workspace-footer">成都雾霾消散时间预测 <span>历史回测与新输入预测分别呈现，不共用精度结论。</span></footer>
+</body></html>

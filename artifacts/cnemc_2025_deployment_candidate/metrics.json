@@ -1,0 +1,8 @@
+{
+  "xgboost_aft": {
+    "mae": 26.267475572022253
+  },
+  "xgboost_aft_snapshot": {
+    "mae": 26.267475572022253
+  }
+}

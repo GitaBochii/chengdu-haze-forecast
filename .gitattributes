@@ -1,0 +1,2 @@
+# Preserve exact bytes used by the audited model integrity checks.
+* -text

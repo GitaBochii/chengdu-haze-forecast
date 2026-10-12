@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="成都雾霾消散时间预测研究：历史空气质量、气象信息与污染恢复过程。">
+  <title>成都雾霾消散时间预测</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="effects.css">
+  <script src="effects.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#research">跳至研究内容</a>
+  <section class="hero" id="top" aria-labelledby="title">
+    <img class="hero-image" src="assets/chengdu-overcast.png" alt="阴天下的成都城市住宅与远处天际线，生成配图">
+    <header class="masthead wrap">
+      <a class="brand" href="#top">成都雾霾消散时间预测</a>
+      <nav aria-label="主导航"><a href="#research">项目介绍</a><a href="#method">数据与方法</a><a href="#validation">历史验证</a><a href="workbench.html">预测工作区 ↗</a></nav>
+    </header>
+    <div class="hero-copy wrap">
+      <h1 id="title">成都雾霾<br>消散时间预测</h1>
+      <p>基于成都历史空气质量与气象数据，<br class="mobile-break">预测污染过程还需多久消散。</p>
+      <div class="hero-actions"><a class="start-prediction" href="workbench.html">开始预测 <span aria-hidden="true">↗</span></a><a class="text-link" href="#research">查看研究内容 <span aria-hidden="true">↓</span></a></div>
+    </div>
+    <div class="hero-caption wrap"><span>四川 · 成都</span><span>历史数据研究 / 2014—2025</span></div>
+  </section>
+  <main>
+    <section class="section wrap editorial-section" id="research">
+      <div class="section-heading"><span class="number">01</span><h2>研究问题</h2></div>
+      <div class="intro-columns"><p class="lead">AQI 短暂下降，<br>并不意味着污染过程已经结束。</p><div><p>本项目以 AQI ≤ 100 且连续保持 6 小时作为恢复判定条件，研究从当前时刻到这段稳定恢复窗口开始，还需要多长时间。</p><p class="muted">关注的不只是下一小时的浓度，而是一次污染过程何时结束。</p></div></div>
+      <div class="index-row"><a href="#method"><span>数据范围</span><strong>2014—2025</strong><span aria-hidden="true">↗</span></a><a href="#method"><span>预测方法</span><strong>恢复时间建模</strong><span aria-hidden="true">↗</span></a><a href="#validation"><span>历史验证</span><strong>按时间检验</strong><span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="method-band" id="method"><div class="section wrap">
+      <div class="section-heading"><span class="number">02</span><h2>数据与方法</h2></div>
+      <div class="section-body"><p class="section-deck">沿着时间顺序，<br>还原每一次污染与恢复。</p>
+        <div class="method-list">
+          <article><span class="small-label">历史记录</span><h3>从 2014 年开始的小时序列</h3><p>空气质量历史范围为 2014 年 5 月至 2025 年 12 月。污染物与气象信息按小时对齐；有时间刻度，不代表每个时刻都有有效观测。</p></article>
+          <article><span class="small-label">预测目标</span><h3>直接估计剩余恢复时间</h3><p>以加速失效时间模型（AFT）作为研究路线之一，结合污染持续状态与气象条件，估计距稳定恢复窗口的时间。观测中断与恢复时间不确定的样本单独处理。</p></article>
+          <article><span class="small-label">检验方式</span><h3>用后面的年份检验前面的模型</h3><p>训练与验证按年份先后划分，不随机打散相邻时刻。既统计逐时误差，也检查整段污染过程，避免长过程中的重复样本掩盖问题。</p></article>
+        </div>
+      </div>
+    </div></section>
+    <section class="section wrap" id="validation">
+      <div class="section-heading"><span class="number">03</span><h2>历史验证</h2></div>
+      <div class="case-heading"><div><span class="small-label">一段实际观测</span><h3>几次回落之后，才真正恢复。</h3></div><p>2022.11.26 — 2022.11.28<br>成都 · 小时 AQI</p></div>
+      <figure class="observation"><div class="chart-top"><span><i></i> AQI 观测</span><span>虚线：恢复阈值 100</span></div><div id="chart" role="img" aria-label="2022 年 11 月 26 日至 28 日 AQI 观测。多次短暂低于 100，直到 28 日 05 时开始连续 6 小时不高于 100。"></div><figcaption>观测范围：11 月 26 日 00:00 至 28 日 10:00，北京时间。绿色区域为首次满足连续 6 小时条件的窗口。</figcaption></figure>
+      <div class="case-facts"><div><span>第一次降至阈值以下</span><strong>11 月 26 日 13:00</strong><p>只维持了 5 小时，随后再次升高。</p></div><div><span>稳定恢复窗口开始</span><strong>11 月 28 日 05:00</strong><p>到 10:00，连续 6 个小时满足条件。</p></div><div><span>从本段观测起点算起</span><strong>53 <small>小时</small></strong><p>这是事后确认的恢复时间，不是模型预测值。</p></div></div>
+      <details><summary>查看逐小时观测数据</summary><div class="table-scroll" tabindex="0" role="region" aria-label="案例逐小时观测"><table><caption>本案例 AQI 观测记录</caption><thead><tr><th scope="col">时间（北京时间）</th><th scope="col">AQI</th></tr></thead><tbody id="observations"></tbody></table></div></details>
+      <a class="text-link case-link" href="workbench.html?date=2022-11-26">查看这段历史回测 <span aria-hidden="true">↗</span></a>
+      <a class="text-link case-link" href="workbench.html?view=rebound">对照预测与实测，查看反弹案例 <span aria-hidden="true">↗</span></a>
+    </section>
+    <section class="limits-band"><div class="section wrap editorial-section">
+      <div class="section-heading"><span class="number">04</span><h2>结果与边界</h2></div>
+      <div class="intro-columns"><p class="lead">历史上能解释，<br>还不等于实时可用。</p><div><p>离线气象资料能帮助分析污染恢复过程，但不能直接视为预测当时已经获得的信息。历史回测与实时预测，需要分开判断。</p><p>当前展示的是历史研究与验证案例，不提供实时空气质量监测或公共预警。不同数据范围、年份和评价口径下的误差，也不能直接比较。</p><a class="text-link" href="research-notes.md" download>下载研究说明 <span aria-hidden="true">↓</span></a></div></div>
+    </div></section>
+  </main>
+  <footer class="wrap"><div><a class="brand" href="#top">成都雾霾消散时间预测</a><p>基于历史观测的污染恢复时间研究</p></div><div class="footer-note"><p>城市配图为生成图像，不对应案例当日天气。</p><p>案例来源：项目历史 AQI 记录。<a href="research-notes.md">数据与口径说明</a></p></div><a href="#top" class="back-top" aria-label="返回顶部">↑</a></footer>
+</body>
+</html>

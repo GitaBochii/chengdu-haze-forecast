@@ -1,0 +1,14 @@
+{
+  "2021": {
+    "lag1_trend": 20,
+    "lag1_chemistry": 20
+  },
+  "2022": {
+    "lag1_trend": 20,
+    "lag1_chemistry": 25
+  },
+  "2023": {
+    "lag1_trend": 12,
+    "lag1_chemistry": 11
+  }
+}
