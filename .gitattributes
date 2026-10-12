@@ -1,2 +1,4 @@
 # Preserve exact bytes used by the audited model integrity checks.
 * -text
+# Keep Windows launchers byte-exact and accept their required CRLF endings.
+*.cmd -text whitespace=trailing-space,space-before-tab,cr-at-eol

@@ -5,6 +5,9 @@
 .workbuddy/
 .env*
 __pycache__/
+*.egg-info/
+build/
+dist/
 *.pyc
 .pytest*/
 .ruff_cache/

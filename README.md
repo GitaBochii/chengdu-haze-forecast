@@ -4,28 +4,28 @@
 
 ## 本地运行
 
-需要 Windows、Python 3.12 和可联网的依赖安装环境。在项目根目录打开 PowerShell，执行：
+需要 Windows x64 和已安装的 **64 位 Python 3.11、3.12 或 3.13**，推荐 Python 3.12。未安装 Python 时，入口会给出 [官方下载页面](https://www.python.org/downloads/windows/)，不会自动安装或修改系统 Python。
 
-```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
-powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start_showcase.ps1
-```
+从 GitHub 点击 **Code → Download ZIP**，完整解压后，在项目目录双击：
+
+| 文件 | 用途 |
+| --- | --- |
+| **安装并启动网页.cmd** | 第一次使用：准备项目环境、安装依赖并打开网页 |
+| **启动网页.cmd** | 日常启动：检查已有环境并打开网页，缺少依赖时自动补装 |
+| **停止网页.cmd** | 结束这个项目的本地后台服务 |
+
+首次安装需要联网，下载依赖可能需要几分钟。安装目录是项目自己的 `.venv`，包含 CPU 版 PyTorch，不需要显卡或管理员权限。安装失败时查看窗口提示，排除网络问题后重新双击即可；不要直接在 ZIP 压缩包里运行入口。
 
 启动脚本会自动打开本地网页，并在 8510 至 8530 之间选择空闲端口。终端输出的 `Website` 地址是本次运行的实际地址。
 
 - 展示页：`http://127.0.0.1:端口/`
 - 操作页：`http://127.0.0.1:端口/workbench.html`
 
-服务只监听本机。关闭浏览器不会停止服务；可根据启动脚本输出的进程 ID 在任务管理器中结束对应 Python 进程。
+服务只监听本机。重复启动会复用这个项目已运行的服务，不会占用新的端口；不同下载副本的服务互不复用。关闭浏览器不会停止后台服务，需要停止时双击 `停止网页.cmd`。
 
 ### 多模态重新推理
 
-多模态历史归档可直接查看。需要在本机重新运行融合预测头时，在同一环境安装 PyTorch，再重新启动网页：
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install torch==2.7.1
-```
+一键安装已包含多模态重新推理所需的 CPU 版 PyTorch。多模态历史归档和对应融合预测头均可在操作页查看、运行。
 
 重新推理使用已保存的污染物输入和气象空间特征，不会在打开网页时重新下载或运行完整 Prithvi 气象编码器。CPU 即可运行该历史案例预测头。
 
@@ -75,6 +75,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start_showcase.ps1
 在项目根目录运行：
 
 ```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 .\.venv\Scripts\python.exe -m pytest tests/test_showcase_server.py tests/test_showcase_online.py tests/test_rebound_cases.py tests/test_rebound_integration.py
 ```
 
